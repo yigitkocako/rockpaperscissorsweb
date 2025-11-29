@@ -1,4 +1,4 @@
-// Rock Paper Scissors - 3 rounds
+// Rock Paper Scissors - 5 rounds
 
 document.addEventListener("DOMContentLoaded", function () {
     const buttons = document.querySelectorAll(".choice");
@@ -8,11 +8,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const computerChoiceText = document.getElementById("computer-choice");
     const roundResultText = document.getElementById("round-result");
     const finalMessageText = document.getElementById("final-message");
+    const guessesText = document.getElementById("guesses-text");
 
     let currentRound = 1;
-    const maxRounds = 3;
+    const maxRounds = 5;
     let playerScore = 0;
     let computerScore = 0;
+
+    // Keep all guesses
+    let userGuesses = [];
 
     // Add click event to each button
     buttons.forEach(function (button) {
@@ -24,6 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const playerChoice = button.getAttribute("data-choice");
             const computerChoice = getComputerChoice();
+
+            // Save player guess
+            userGuesses.push(playerChoice);
 
             // Show choices
             playerChoiceText.textContent = "Player choice: " + playerChoice;
@@ -53,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // If all rounds are played, end the game
             if (currentRound > maxRounds) {
-                endGame(buttons, playerScore, computerScore, finalMessageText, roundText);
+                endGame(buttons, playerScore, computerScore, finalMessageText, roundText, guessesText, userGuesses);
             }
         });
     });
@@ -84,7 +91,7 @@ function getResult(player, computer) {
 }
 
 // Ends the game and disables buttons
-function endGame(buttons, playerScore, computerScore, finalMessageText, roundText) {
+function endGame(buttons, playerScore, computerScore, finalMessageText, roundText, guessesText, userGuesses) {
     buttons.forEach(function (button) {
         button.disabled = true;
     });
@@ -101,4 +108,7 @@ function endGame(buttons, playerScore, computerScore, finalMessageText, roundTex
 
     finalMessageText.textContent = message;
     roundText.textContent = "All rounds are finished.";
+
+    // Show player guesses
+    guessesText.textContent = "Your guesses: " + userGuesses.join(", ");
 }
